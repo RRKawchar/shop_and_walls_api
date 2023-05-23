@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shop_api_getx/controllers/wallpaper_controller.dart';
 
@@ -46,7 +48,21 @@ class WallpaperScreen extends StatelessWidget {
                   color: Colors.green,
                   
                 ),
-                child: Image.network(data.urls.full),
+                child: CachedNetworkImage(
+                  imageUrl: _wallpaperController.wallpapers[index].urls.regular,
+                  imageBuilder: (context, imageProvider) => Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.cover,
+                          colorFilter:
+                          const ColorFilter.mode(Colors.red, BlendMode.colorBurn)),
+                    ),
+                  ),
+                  placeholder: (context, url) => Image.asset('assets/images/place.png',fit: BoxFit.cover,)
+                  ,
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                ),
 
               );
 
@@ -66,9 +82,23 @@ class WallpaperScreen extends StatelessWidget {
             return Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: Colors.green,
-              ),
 
+              ),
+               child: CachedNetworkImage(
+                 imageUrl: _wallpaperController.wallpapers[index].urls.full,
+                 imageBuilder: (context, imageProvider) => Container(
+                   decoration: BoxDecoration(
+                     image: DecorationImage(
+                         image: imageProvider,
+                         fit: BoxFit.cover,
+                         colorFilter:
+                         const ColorFilter.mode(Colors.red, BlendMode.colorBurn)),
+                   ),
+                 ),
+                 placeholder: (context, url) => Image.asset('assets/images/place.png',fit: BoxFit.cover,)
+                 ,
+                 errorWidget: (context, url, error) => const Icon(Icons.error),
+               ),
             );
 
           },);
